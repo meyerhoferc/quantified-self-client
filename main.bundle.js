@@ -10374,16 +10374,17 @@
 
 	function createFood() {
 	  clearValidationMessages();
+
 	  const foodName = $('#food-name');
 	  const foodCalories = $('#food-calories');
 	  const foodData = {};
 	  foodData.name = foodName.val();
 	  foodData.calories = foodCalories.val();
+
 	  if (foodNameInvalid(foodName) && foodCaloriesInvalid(foodCalories)) {
 	    nameValidationMessage(foodName);
 	    return caloriesValidationMessage(foodCalories);
 	  } else if (foodNameInvalid(foodName)) {
-	    console.log('success');
 	    return nameValidationMessage(foodName);
 	  } else if (foodCaloriesInvalid(foodCalories)) {
 	    return caloriesValidationMessage(foodCalories);
