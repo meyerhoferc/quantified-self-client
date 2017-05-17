@@ -69,7 +69,6 @@
 	    });
 
 	    $('tbody').on('click', '#delete-food-button', function (event) {
-	      alert('you clicked delete');
 	      deleteFood.deleteFood(event);
 	    });
 
