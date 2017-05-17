@@ -55,6 +55,7 @@
 	const $ = __webpack_require__(2);
 	const getFoodData = __webpack_require__(3);
 	const createFood = __webpack_require__(4);
+	const deleteFood = __webpack_require__(5);
 
 	class Food {
 	  constructor() {
@@ -65,6 +66,11 @@
 	  foodEventListeners() {
 	    $('#create-food-button').on('click', function (event) {
 	      createFood.createFood();
+	    });
+
+	    $('tbody').on('click', '#delete-food-button', function (event) {
+	      alert('you clicked delete');
+	      deleteFood.deleteFood(event);
 	    });
 
 	    $('form').on('submit', function (event) {
@@ -10358,7 +10364,7 @@
 
 	function formatFoods(data) {
 	  for (var i = 0; i < data.length; i++) {
-	    $('tbody').prepend(`<tr><td><p>${data[i].name}</p></td><td><p>${data[i].calories}</p></td><td><button data-food-id=${data[i].id} id='delete-food' class='btn red'>Delete</button></td></tr>`);
+	    $('tbody').prepend(`<tr><td><p>${data[i].name}</p></td><td><p>${data[i].calories}</p></td><td><button data-food-id=${data[i].id} id='delete-food-button' class='btn red'>Delete</button></td></tr>`);
 	  };
 	};
 
@@ -10430,6 +10436,29 @@
 	};
 
 	module.exports = { createFood: createFood };
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const API = 'https://quantified-self-cm.herokuapp.com/api/';
+	const localHost = 'http://127.0.0.1:3000/api/';
+	const $ = __webpack_require__(2);
+
+	function deleteFood(event) {
+	  const removeButton = event.target;
+	  const id = $(removeButton).data('food-id');
+	  $.ajax({
+	    url: API + 'foods/' + id,
+	    method: 'DELETE'
+	  }).then(removeFood(removeButton));
+	};
+
+	function removeFood(removeButton) {
+	  $(removeButton).parent().parent().remove();
+	}
+
+	module.exports = { deleteFood: deleteFood };
 
 /***/ })
 /******/ ]);
