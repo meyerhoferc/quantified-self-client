@@ -54,18 +54,30 @@
 	const localHost = 'http://127.0.0.1:3000/api/';
 	const $ = __webpack_require__(2);
 	const getFoodData = __webpack_require__(3);
+	const createFood = __webpack_require__(4);
 
 	class Food {
 	  constructor() {
 	    getFoodData.getFoods();
+	    this.foodEventListeners();
 	  }
 
-	  foodEventListeners() {}
+	  foodEventListeners() {
+	    $('#create-food-button').on('click', function (event) {
+	      createFood.createFood();
+	    });
+
+	    $('form').on('submit', function (event) {
+	      event.preventDefault();
+	    });
+	  }
 	};
 
 	$(document).ready(function () {
 	  const food = new Food();
-	  // add prevent default for submit event for new foods
+	  $('form').on('submit', function (event) {
+	    event.preventDefault();
+	  });
 	});
 
 /***/ }),
@@ -10346,12 +10358,46 @@
 
 	function formatFoods(data) {
 	  for (var i = 0; i < data.length; i++) {
-	    console.log(data);
 	    $('tbody').prepend(`<tr><td><p>${data[i].name}</p></td><td><p>${data[i].calories}</p></td><td><button data-food-id=${data[i].id} id='delete-food' class='btn red'>Delete</button></td></tr>`);
 	  };
 	};
 
 	module.exports = { getFoods: getFoods };
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const API = 'https://quantified-self-cm.herokuapp.com/';
+	const localHost = 'http://127.0.0.1:3000/api/';
+	const $ = __webpack_require__(2);
+
+	function createFood() {
+	  const foodName = $('#food-name');
+	  const foodCalories = $('#food-calories');
+	  const foodData = {};
+	  foodData.name = foodName.val();
+	  foodData.calories = foodCalories.val();
+
+	  console.log(API + 'api/foods?name=' + foodData.name + '&calories=' + foodData.calories);
+	  // add some validations & errors for name & calories here
+	  return $.ajax({
+	    url: API + 'api/foods?name=' + foodData.name + '&calories=' + foodData.calories,
+	    method: 'POST'
+	  }).then(newFood => {
+	    updateFoodsTable(newFood);
+	    foodName.val('');
+	    foodCalories.val('');
+	  }).catch(error => {
+	    console.log(error);
+	  });
+	};
+
+	function updateFoodsTable(food) {
+	  $('tbody').prepend(`<tr><td><p>${food.name}</p></td><td><p>${food.calories}</p></td><td><button data-food-id=${food.id} id='delete-food' class='btn red'>Delete</button></td></tr>`);
+	};
+
+	module.exports = { createFood: createFood };
 
 /***/ })
 /******/ ]);
