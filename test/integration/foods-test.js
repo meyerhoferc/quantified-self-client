@@ -40,12 +40,4 @@ test.describe('foods.html', function() {
       assert.include(foodText, '50');
     });
   });
-
-  test.xit('a user can delete a food', function() {
-    driver.get('https://meyerhoferc.github.io/quantified-self-client/foods.html');
-    const targetFood = driver.findElement({css: '#apple'});
-    targetFood.getText().then(function(targetText) {
-      console.log(targetText)
-    })
-  })
 });
