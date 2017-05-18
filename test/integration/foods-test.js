@@ -41,19 +41,11 @@ test.describe('foods.html', function() {
     });
   });
 
-  test.it('a user can delete a food', function() {
+  test.xit('a user can delete a food', function() {
     driver.get('https://meyerhoferc.github.io/quantified-self-client/foods.html');
-    const foodName = driver.findElement({css: '#food-name'});
-    const foodCalories = driver.findElement({css: '#food-calories'});
-    const submitButton = driver.findElement({css: '#create-food-button'});
-    foodName.sendKeys('apple');
-    foodCalories.sendKeys('50');
-    submitButton.click();
-
-    const newFood = driver.findElement({css: 'tbody'});
-    newFood.getText().then(function(foodText) {
-      assert.include(foodText, 'apple');
-      assert.include(foodText, '50');
-    });
+    const targetFood = driver.findElement({css: '#apple'});
+    targetFood.getText().then(function(targetText) {
+      console.log(targetText)
+    })
   })
 });
